@@ -1,58 +1,512 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- says whos turn it is -->
 <div>
   <center>
-    <img src="https://static.wikia.nocookie.net/classical-literature/images/3/33/Piggy1990.jpg/revision/latest?cb=20190527210833"></img>
+    <h1 id="h1"></h1>
   </center>
-</div
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Codeconvey" />
+</div>
+<!-- Player choose style-->
+<style>
+  .onePlayerButton {
+    margin: 0;
+    position: absolute;
+    top: 10%;
+    left: 46%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+</style>
+<style>
+  .twoPlayerButton {
+    margin: 0;
+    position: absolute;
+    top: 10%;
+    left: 54%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+</style>
+<!-- Print the tic tac toe board -->
 
-    <!-- Style CSS -->
-    <link rel="stylesheet" href="css/style.css">
+<style>
+  .board {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+</style>
+<!-- set spots for all squares -->
+<style>
+  .sq1 {
+    margin: 0;
+    position: absolute;
+    top: 28%;
+    left: 38%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .sq2 {
+    margin: 0;
+    position: absolute;
+    top: 28%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .sq3 {
+    margin: 0;
+    position: absolute;
+    top: 28%;
+    left: 62%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .sq4 {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 38%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .sq5 {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .sq6 {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 62%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .sq7 {
+    margin: 0;
+    position: absolute;
+    top: 70%;
+    left: 38%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .sq8 {
+    margin: 0;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .sq9 {
+    margin: 0;
+    position: absolute;
+    top: 70%;
+    left: 62%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+</style>
+<div class="board">
+  <center>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADdCAMAAADn2OwWAAAALVBMVEX///8AAAD9/f0EBAT6+vr39/cJCQnv7+8LCwvt7e0WFhYTExPr6+vy8vIQEBBfImjCAAAC5UlEQVR4nO2c226rMADAoFzWXf//cw/ppp0PiGVVk92qjxYOBMpDsiwE67oiHlYFUZyugihOV0EUp6sgitNVEMXpKojidBVEcboKojhdBVGcroIoTldBFKerIIrTVRDF6SqI4nQVRHG6CqI4XQVRnK6CKE5XQRSnqyCK01UQxekqiOJ0FURxugqiOF0FUZyugihOV0EUp6sgitNVEMXpKojidBVEcboK4i/HHRsZtx2Ua7nNcjn2c12nPT+s67kThzUAhudzDPcJiB6c4yL4hGSzo/P6OKKNO3PbY5xeCRcxPvuYKIRoMKbvTsmmR+flqnsj59zb1faCTLpx653jvK/bek5r/vsu3Z3xTcdt4zs+ED8yxDd/5taVPG+obn7OXY/cl3fybvl+zeKDmXPTjFsbfLdcuPvlHPs4kGuKUL6Han+Sun08C07yv+U5ngRMHHBd79e1dBJzZHA9CRbqz+X04HzcHnHkW8ElvH1QvkmOZV/R97l94V56ANg4SgVRnK6CKE5XQRSnqyCK01UQxekqiOJ0FURxugqiOF0FUZyugihOV0EUp6sgitNVEMXpKojidBVEcboKojhdBVGcroIoTldBFKerIIrTVRDF6SqI4nQVRHG6CqI4XQVRnK6CKE5XQRSnqyCK01UQxekqiOJ0FURxugriz8aNVc8nudr4/F6fTbDOcn+sxr9Pe351Y3k/o5uO235/KDjj/Jnbxi4RYN029rJgfPPX9cdy3BDRN5fqdixPstj485r8xxcZ93UJsY16Zjn4R8GzLKUeq/H3jdybYduXp9l5YkCfuaeiOF0FUZyugihOV0EUp6sgitNVEMXpKojidBVEcboKojhdBVGcroIoTldBFKerIIrTVRDF6SqI4nQVRHG6CqI4XQVRnK6CKE5XQRSnqyCK01UQxekqiOJ0FURxugqiOF0FUZyugihOV0EUp6sgitNVEMXpKojidBVEcboKojhdBVGcrlr+ATPKFL9thIzlAAAAAElFTkSuQmCC" alt="This is the tic tac toe board, if this does not load please reload the page." width="450" length="450"></img
+  </center>
+</div>
+<!-- Square 1 -->
+<div class="sq1">
+  <button type="button" onclick="clickSQ1()"><h1 id="sq1Mark"></h1></button>
+</div>
+<!-- Square 2 -->
+<div class="sq2">
+  <button type="button" onclick="clickSQ2()"><h1 id="sq2Mark"></h1></button>
+</div>
+<!-- Square 3 -->
+<div class="sq3">
+  <button type="button" onclick="clickSQ3()"><h1 id="sq3Mark"></h1></button>
+</div>
+<!--Square 4 -->
+<div class="sq4">
+  <button type="button" onclick="clickSQ4()"><h1 id="sq4Mark"></h1></button>
+</div>
+<!-- Square 5 -->
+<div class="sq5">
+  <button type="button" onclick="clickSQ5()"><h1 id="sq5Mark"></h1></button>
+</div>
+<!-- Square 6 -->
+<div class="sq6">
+  <button type="button" onclick="clickSQ6()"><h1 id="sq6Mark"></h1></button>
+</div>
+<!-- Square 7 -->
+<div class="sq7">
+  <button type="button" onclick="clickSQ7()"><h1 id="sq7Mark"></h1></button>
+</div>
+<!-- Square 8 -->
+<div class="sq8">
+  <button type="button" onclick="clickSQ8()"><h1 id="sq8Mark"></h1></button>
+</div>
+<!-- Square 9 -->
+<div class="sq9">
+  <button type="button" onclick="clickSQ9()"><h1 id="sq9Mark"></h1></button>
+</div>
+<!-- Player choose buttons -->
+<div>
+  <button class="onePlayerButton" onclick="choosePlayers(1)">
+    <p>One Player</p>
+  </button>
+  <button class="twoPlayerButton" onclick="choosePlayers(2)">
+    <p>Two Player</p>
+  </button>
+</div>
+<script>
+  //Runs the actual game
+  let square1 = 0
+  let square2 = 0
+  let square3 = 0
+  let square4 = 0
+  let square5 = 0
+  let square6 = 0
+  let square7 = 0
+  let square8 = 0
+  let square9 = 0
+  let playing = true
+  let turn = 1
+  let playerTurn = 'X'
+  let winner = 0
+  let numberOfPlayers = 0
 
-    <!--Only for demo purpose - no need to add.-->
-    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+  document.getElementById("h1").innerHTML = "Welcome to tic tac toe. Choose one or two players."
+  function randomNumber() {
+    function randomIntFromInterval(min, max) { // min and max included
+      return Math.floor(Math.random() * (max - min + 1) + min)
+    }
+  }
 
+    const rndInt = randomIntFromInterval(1, 9)
+  function choosePlayers(players) {
+    if (players === 1) {
+      document.getElementById("h1").innerHTML = "One player, you will play as X. Click on any square, it's your turn."
+      numberOfPlayers = 1
+      console.log(numberOfPlayers)
+    }
+    if (players === 2) {
+      numberOfPlayers = 2
+      document.getElementById("h1").innerHTML = "Two players, one is 'X', the other 'O'. Your up 'X'."
 
-<section>
-    <div class="rt-container">
-          <div class="col-rt-12">
-              <div class="Scriptcontent">
+    }
+  }
+function checkBoard() {
+  if ((square1 === square2) && (square2 === square3) && (square1 !== 0)) {
+    if (square1 === 'X') {
+      winner = 'X'
+    }
+    else if (square1 === 'O') {
+      winner = 'O'
+    }
+    playing = false
+    document.getElementById("h1").innerHTML = "Congratulations, " + winner + " you have won! Please refresh this page to play again."
+  }
 
-<!-- partial:index.partial.html -->
-<section id="app">
-    <div class="container">
-      <div class="row">
-        <div class="col-6">
-          <div class="comment">
-        <p v-for="items in item" v-text="items"></p>
-          </div><!--End Comment-->
-          </div><!--End col -->
-          </div><!-- End row -->
-      <div class="row">
-        <div class="col-6">
-      <textarea type="text" class="input" placeholder="Write a comment" v-model="newItem" @keyup.enter="addItem()"></textarea>
-          <button v-on:click="addItem()" class='primaryContained float-right' type="submit">Insult Piggy! (in a school appropriate manner)</button>
-        </div><!-- End col -->
-      </div><!--End Row -->
-    </div><!--End Container -->
-  </section><!-- end App -->
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-<script  src="js/script.js"></script>
+  if ((square4 === square5) && (square5 === square6) && (square4 !== 0)) {
+    if (square4 === 'X') {
+      winner = 'X'
+    }
+    else if (square4 === 'O') {
+      winner = 'O'
+    }
+    playing = false
+    document.getElementById("h1").innerHTML = "Congratulations, " + winner + " you have won! Please refresh this page to play again."
+  }
 
-    		</div>
-		</div>
-    </div>
-</section>
+  if ((square7 === square8) && (square8 === square9) && (square7 !== 0)) {
+    if (square7 === 'X') {
+      winner = 'X'
+    }
+    else if (square7 === 'O') {
+      winner = 'O'
+    }
+    playing = false
+    document.getElementById("h1").innerHTML = "Congratulations, " + winner + " you have won! Please refresh this page to play again."
+  }
 
+  if ((square1 === square4) && (square4 === square7) && (square1 !== 0)) {
+    if (square1 === 'X') {
+      winner = 'X'
+    }
+    else if (square1 === 'O') {
+      winner = 'O'
+    }
+    playing = false
+    document.getElementById("h1").innerHTML = "Congratulations, " + winner + " you have won! Please refresh this page to play again."
+  }
 
-<!-- Analytics -->
+  if ((square2 === square5) && (square5 === square8) && (square2 !== 0)) {
+    if (square2 === 'X') {
+      winner = 'X'
+    }
+    else if (square2 === 'O') {
+      winner = 'O'
+    }
+    playing = false
+    document.getElementById("h1").innerHTML = "Congratulations, " + winner + " you have won! Please refresh this page to play again."
+  }
 
-	</body>
-</html>
+  if ((square3 === square6) && (square6 === square9) && (square3 !== 0)) {
+    if (square3 === 'X') {
+      winner = 'X'
+    }
+    else if (square3 === 'O') {
+      winner = 'O'
+    }
+    playing = false
+    document.getElementById("h1").innerHTML = "Congratulations, " + winner + " you have won! Please refresh this page to play again."
+  }
+
+  if ((square7 === square8) && (square8 === square9) && (square7 !== 0)) {
+    if (square7 === 'X') {
+      winner = 'X'
+    }
+    else if (square7 === 'O') {
+      winner = 'O'
+    }
+    playing = false
+    document.getElementById("h1").innerHTML = "Congratulations, " + winner + " you have won! Please refresh this page to play again."
+  }
+
+  if ((square1 === square5) && (square5 === square9) && (square1 !== 0)) {
+    if (square1 === 'X') {
+      winner = 'X'
+    }
+    else if (square1 === 'O') {
+      winner = 'O'
+    }
+    playing = false
+    document.getElementById("h1").innerHTML = "Congratulations, " + winner + " you have won! Please refresh this page to play again."
+  }
+
+  if ((square3 === square5) && (square5 === square7) && (square3 !== 0)) {
+    if (square3 === 'X') {
+      winner = 'X'
+    }
+    else if (square3 === 'O') {
+      winner = 'O'
+    }
+    playing = false
+    document.getElementById("h1").innerHTML = "Congratulations, " + winner + " you have won! Please refresh this page to play again."
+  }
+}
+
+  function turnPlusPlus() {
+    turn++
+    checkBoard()
+    if (playerTurn === 'X') {
+      playerTurn = 'O'
+    }
+    else if (playerTurn === 'O') {
+      playerTurn = 'X'
+    }
+  }
+
+//'AI' player
+function computerPlayer2() {
+  randomNumber()
+  const rndInt = randomIntFromInterval(1, 9)
+  if (rndInt === 1) {
+    if ((square1 !== 'X') && (square1 !== 'O')) {
+      square1 = 'O'
+      document.getElementById("sq1Mark").innerHTML = 'X'
+    }
+  }
+    else if (rndInt === 2) {
+      if ((square2 !== 'X') && (square2 !== 'O')) {
+        square2 = 'O'
+        document.getElementById("sq2Mark").innerHTML = 'X'
+      }
+    }
+      else if (rndInt === 3) {
+        if ((square3 !== 'X') && (square3 !== 'O')) {
+          square3 = 'O'
+          document.getElementById("sq3Mark").innerHTML = 'X'
+        }
+      }
+        else if (rndInt === 4) {
+          if ((square4 !== 'X') && (square4 !== 'O')) {
+            square4 = 'O'
+            document.getElementById("sq4Mark").innerHTML = 'X'
+          }
+        }
+          else if (rndInt === 5) {
+            if ((square5 !== 'X') && (square5 !== 'O')) {
+              square5 = 'O'
+              document.getElementById("sq5Mark").innerHTML = 'X'
+            }
+          }
+            else if (rndInt === 6) {
+              if ((square6 !== 'X') && (square6 !== 'O')) {
+                square6 = 'O'
+                document.getElementById("sq6Mark").innerHTML = 'X'
+              }
+            }
+              else if (rndInt === 7) {
+                if ((square7 !== 'X') && (square7 !== 'O')) {
+                  square7 = 'O'
+                  document.getElementById("sq7Mark").innerHTML = 'X'
+                }
+              }
+                else if (rndInt === 8) {
+                  if ((square8 !== 'X') && (square8 !== 'O')) {
+                    square8 = 'O'
+                    document.getElementById("sq8Mark").innerHTML = 'X'
+                  }
+                }
+                  else if (rndInt === 9) {
+                    if ((square9 !== 'X') && (square9 !== 'O')) {
+                      square9 = 'O'
+                      document.getElementById("sq6Mark").innerHTML = 'X'
+                  }
+                }
+              }
+
+//Makes the mark on each square
+function clickSQ1() {
+  if (numberOfPlayers === 2) {
+    if ((square1 !== 'X') && (square1 !== 'O')){
+      if (playing === true) {
+        square1 = playerTurn
+        document.getElementById("sq1Mark").innerHTML = playerTurn
+        turnPlusPlus()
+        if (playing === true) {
+          document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+  else if (numberOfPlayers === 1){
+    if ((square1 !== 'X') && (square1 !== 'O')){
+      if (playing === true) {
+        square1 = 'X'
+        document.getElementById("sq1Mark").innerHTML = 'X'
+        if (playing === true) {
+          computerPlayer2()
+        }
+      }
+    }
+  }
+}
+function clickSQ2() {
+  if (numberOfPlayers === 2) {
+    if ((square2 !== 'X') && (square2 !== 'O')){
+      if (playing === true) {
+        square2 = playerTurn
+        document.getElementById("sq2Mark").innerHTML = playerTurn
+        turnPlusPlus()
+        if (playing === true) {
+          document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+}
+function clickSQ3() {
+  if (numberOfPlayers === 2) {
+    if ((square3 !== 'X') && (square3 !== 'O')){
+      if (playing === true) {
+        square3 = playerTurn
+        document.getElementById("sq3Mark").innerHTML = playerTurn
+        turnPlusPlus()
+        if (playing === true) {
+          document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+}
+function clickSQ4() {
+  if (numberOfPlayers === 2) {
+    if ((square4 !== 'X') && (square4 !== 'O')){
+      if (playing === true) {
+        square4 = playerTurn
+        document.getElementById("sq4Mark").innerHTML = playerTurn
+        turnPlusPlus()
+        if (playing === true) {
+          document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+}
+function clickSQ5() {
+  if (numberOfPlayers === 2) {
+    if ((square5 !== 'X') && (square5 !== 'O')){
+      if (playing === true) {
+        square5 = playerTurn
+        document.getElementById("sq5Mark").innerHTML = playerTurn
+        turnPlusPlus()
+        if (playing === true) {
+          document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+}
+function clickSQ6() {
+  if (numberOfPlayers === 2) {
+    if ((square6 !== 'X') && (square6 !== 'O')){
+      if (playing === true) {
+        square6 = playerTurn
+        document.getElementById("sq6Mark").innerHTML = playerTurn
+        turnPlusPlus()
+        if (playing === true) {
+          document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+}
+function clickSQ7() {
+  if (numberOfPlayers === 2) {
+    if ((square7 !== 'X') && (square7 !== 'O')){
+      if (playing === true) {
+        square7 = playerTurn
+        document.getElementById("sq7Mark").innerHTML = playerTurn
+        turnPlusPlus()
+        if (playing === true) {
+          document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+}
+function clickSQ8() {
+  if (numberOfPlayers === 2) {
+    if ((square8 !== 'X') && (square8 !== 'O')){
+      if (playing === true) {
+        square8 = playerTurn
+        document.getElementById("sq8Mark").innerHTML = playerTurn
+        turnPlusPlus()
+        if (playing === true) {
+          document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+}
+function clickSQ9() {
+  if (numberOfPlayers === 2) {
+    if ((square9 !== 'X') && (square9 !== 'O')){
+      if (playing === true) {
+        square9 = playerTurn
+        document.getElementById("sq9Mark").innerHTML = playerTurn
+        turnPlusPlus()
+        if (playing === true) {
+          document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+}
+</script>
