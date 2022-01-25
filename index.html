@@ -296,6 +296,10 @@ function checkBoard() {
     playing = false
     document.getElementById("h1").innerHTML = "Congratulations, " + winner + " you have won! Please refresh this page to play again."
   }
+  if ((square1 !== 0) && (square2 !== 0) && (square3 !== 0) && (square4 !== 0) && (square5 !== 0) && (square6 !== 0) && (square7 !== 0) && (square8 !== 0) && (square9 !== 0)) {
+    playing = false
+    document.getElementById("h1").innerHTML = "It's a tie, refresh the page to play again."
+  }
 }
 
   function turnPlusPlus() {
