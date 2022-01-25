@@ -180,10 +180,8 @@
   let numberOfPlayers = 0
 
   document.getElementById("h1").innerHTML = "Welcome to tic tac toe. Choose one or two players."
-  function randomNumber() {
-    function randomIntFromInterval(min, max) { // min and max included
-      return Math.floor(Math.random() * (max - min + 1) + min)
-    }
+  function randomIntFromInterval(min, max) { // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
     const rndInt = randomIntFromInterval(1, 9)
@@ -303,70 +301,102 @@ function checkBoard() {
   function turnPlusPlus() {
     turn++
     checkBoard()
-    if (playerTurn === 'X') {
-      playerTurn = 'O'
+    if (numberOfPlayers === 2) {
+      if (playerTurn === 'X') {
+        playerTurn = 'O'
+      }
+      else if (playerTurn === 'O') {
+        playerTurn = 'X'
+      }
     }
-    else if (playerTurn === 'O') {
-      playerTurn = 'X'
+    else if (numberOfPlayers === 1) {
     }
   }
 
 //'AI' player
 function computerPlayer2() {
-  randomNumber()
-  const rndInt = randomIntFromInterval(1, 9)
-  if (rndInt === 1) {
-    if ((square1 !== 'X') && (square1 !== 'O')) {
-      square1 = 'O'
-      document.getElementById("sq1Mark").innerHTML = 'X'
-    }
-  }
-    else if (rndInt === 2) {
-      if ((square2 !== 'X') && (square2 !== 'O')) {
-        square2 = 'O'
-        document.getElementById("sq2Mark").innerHTML = 'X'
+  if (playing === true){
+    const rndInt = randomIntFromInterval(1, 9)
+    if (rndInt === 1) {
+      if ((square1 !== 'X') && (square1 !== 'O')) {
+        square1 = 'O'
+        document.getElementById("sq1Mark").innerHTML = 'O'
+      }
+      else{
+        computerPlayer2()
       }
     }
-      else if (rndInt === 3) {
-        if ((square3 !== 'X') && (square3 !== 'O')) {
-          square3 = 'O'
-          document.getElementById("sq3Mark").innerHTML = 'X'
+      else if (rndInt === 2) {
+        if ((square2 !== 'X') && (square2 !== 'O')) {
+          square2 = 'O'
+          document.getElementById("sq2Mark").innerHTML = 'O'
+        }
+        else{
+          computerPlayer2()
         }
       }
-        else if (rndInt === 4) {
-          if ((square4 !== 'X') && (square4 !== 'O')) {
-            square4 = 'O'
-            document.getElementById("sq4Mark").innerHTML = 'X'
+        else if (rndInt === 3) {
+          if ((square3 !== 'X') && (square3 !== 'O')) {
+            square3 = 'O'
+            document.getElementById("sq3Mark").innerHTML = 'O'
+          }
+          else{
+            computerPlayer2()
           }
         }
-          else if (rndInt === 5) {
-            if ((square5 !== 'X') && (square5 !== 'O')) {
-              square5 = 'O'
-              document.getElementById("sq5Mark").innerHTML = 'X'
+          else if (rndInt === 4) {
+            if ((square4 !== 'X') && (square4 !== 'O')) {
+              square4 = 'O'
+              document.getElementById("sq4Mark").innerHTML = 'O'
+            }
+            else{
+              computerPlayer2()
             }
           }
-            else if (rndInt === 6) {
-              if ((square6 !== 'X') && (square6 !== 'O')) {
-                square6 = 'O'
-                document.getElementById("sq6Mark").innerHTML = 'X'
+            else if (rndInt === 5) {
+              if ((square5 !== 'X') && (square5 !== 'O')) {
+                square5 = 'O'
+                document.getElementById("sq5Mark").innerHTML = 'O'
+              }
+              else{
+                computerPlayer2()
               }
             }
-              else if (rndInt === 7) {
-                if ((square7 !== 'X') && (square7 !== 'O')) {
-                  square7 = 'O'
-                  document.getElementById("sq7Mark").innerHTML = 'X'
+              else if (rndInt === 6) {
+                if ((square6 !== 'X') && (square6 !== 'O')) {
+                  square6 = 'O'
+                  document.getElementById("sq6Mark").innerHTML = 'O'
+                }
+                else{
+                  computerPlayer2()
                 }
               }
-                else if (rndInt === 8) {
-                  if ((square8 !== 'X') && (square8 !== 'O')) {
-                    square8 = 'O'
-                    document.getElementById("sq8Mark").innerHTML = 'X'
+                else if (rndInt === 7) {
+                  if ((square7 !== 'X') && (square7 !== 'O')) {
+                    square7 = 'O'
+                    document.getElementById("sq7Mark").innerHTML = 'O'
+                  }
+                  else{
+                    computerPlayer2()
                   }
                 }
-                  else if (rndInt === 9) {
-                    if ((square9 !== 'X') && (square9 !== 'O')) {
-                      square9 = 'O'
-                      document.getElementById("sq6Mark").innerHTML = 'X'
+                  else if (rndInt === 8) {
+                    if ((square8 !== 'X') && (square8 !== 'O')) {
+                      square8 = 'O'
+                      document.getElementById("sq8Mark").innerHTML = 'O'
+                    }
+                    else{
+                      computerPlayer2()
+                    }
+                  }
+                    else if (rndInt === 9) {
+                      if ((square9 !== 'X') && (square9 !== 'O')) {
+                        square9 = 'O'
+                        document.getElementById("sq9Mark").innerHTML = 'O'
+                    }
+                    else{
+                      computerPlayer2()
+                    }
                   }
                 }
               }
@@ -390,8 +420,10 @@ function clickSQ1() {
       if (playing === true) {
         square1 = 'X'
         document.getElementById("sq1Mark").innerHTML = 'X'
+        checkBoard()
         if (playing === true) {
           computerPlayer2()
+          turnPlusPlus()
         }
       }
     }
@@ -410,6 +442,19 @@ function clickSQ2() {
       }
     }
   }
+  else if (numberOfPlayers === 1){
+    if ((square2 !== 'X') && (square2 !== 'O')){
+      if (playing === true) {
+        square2 = 'X'
+        document.getElementById("sq2Mark").innerHTML = 'X'
+        checkBoard()
+        if (playing === true) {
+          computerPlayer2()
+          turnPlusPlus()
+        }
+      }
+    }
+  }
 }
 function clickSQ3() {
   if (numberOfPlayers === 2) {
@@ -420,6 +465,19 @@ function clickSQ3() {
         turnPlusPlus()
         if (playing === true) {
           document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+  else if (numberOfPlayers === 1){
+    if ((square3 !== 'X') && (square3 !== 'O')){
+      if (playing === true) {
+        square3 = 'X'
+        document.getElementById("sq3Mark").innerHTML = 'X'
+        checkBoard()
+        if (playing === true) {
+          computerPlayer2()
+          turnPlusPlus()
         }
       }
     }
@@ -438,6 +496,19 @@ function clickSQ4() {
       }
     }
   }
+  else if (numberOfPlayers === 1){
+    if ((square4 !== 'X') && (square4 !== 'O')){
+      if (playing === true) {
+        square4 = 'X'
+        document.getElementById("sq4Mark").innerHTML = 'X'
+        checkBoard()
+        if (playing === true) {
+          computerPlayer2()
+          turnPlusPlus()
+        }
+      }
+    }
+  }
 }
 function clickSQ5() {
   if (numberOfPlayers === 2) {
@@ -448,6 +519,19 @@ function clickSQ5() {
         turnPlusPlus()
         if (playing === true) {
           document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+  else if (numberOfPlayers === 1){
+    if ((square5 !== 'X') && (square5 !== 'O')){
+      if (playing === true) {
+        square1 = 'X'
+        document.getElementById("sq5Mark").innerHTML = 'X'
+        checkBoard()
+        if (playing === true) {
+          computerPlayer2()
+          turnPlusPlus()
         }
       }
     }
@@ -466,6 +550,19 @@ function clickSQ6() {
       }
     }
   }
+  else if (numberOfPlayers === 1){
+    if ((square6 !== 'X') && (square6 !== 'O')){
+      if (playing === true) {
+        square6 = 'X'
+        document.getElementById("sq6Mark").innerHTML = 'X'
+        checkBoard()
+        if (playing === true) {
+          computerPlayer2()
+          turnPlusPlus()
+        }
+      }
+    }
+  }
 }
 function clickSQ7() {
   if (numberOfPlayers === 2) {
@@ -476,6 +573,19 @@ function clickSQ7() {
         turnPlusPlus()
         if (playing === true) {
           document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+  else if (numberOfPlayers === 1){
+    if ((square7 !== 'X') && (square7 !== 'O')){
+      if (playing === true) {
+        square7 = 'X'
+        document.getElementById("sq7Mark").innerHTML = 'X'
+        checkBoard()
+        if (playing === true) {
+          computerPlayer2()
+          turnPlusPlus()
         }
       }
     }
@@ -494,6 +604,19 @@ function clickSQ8() {
       }
     }
   }
+  else if (numberOfPlayers === 1){
+    if ((square8 !== 'X') && (square8 !== 'O')){
+      if (playing === true) {
+        square8 = 'X'
+        document.getElementById("sq8Mark").innerHTML = 'X'
+        checkBoard()
+        if (playing === true) {
+          computerPlayer2()
+          turnPlusPlus()
+        }
+      }
+    }
+  }
 }
 function clickSQ9() {
   if (numberOfPlayers === 2) {
@@ -504,6 +627,19 @@ function clickSQ9() {
         turnPlusPlus()
         if (playing === true) {
           document.getElementById("h1").innerHTML = "It is your turn, " + playerTurn + " Click on any square to continue."
+        }
+      }
+    }
+  }
+  else if (numberOfPlayers === 1){
+    if ((square9 !== 'X') && (square9 !== 'O')){
+      if (playing === true) {
+        square9 = 'X'
+        document.getElementById("sq9Mark").innerHTML = 'X'
+        checkBoard()
+        if (playing === true) {
+          computerPlayer2()
+          turnPlusPlus()
         }
       }
     }
