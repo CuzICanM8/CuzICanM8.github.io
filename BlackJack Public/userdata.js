@@ -1,9 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <!-- Collect user data -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() *
+ charactersLength));
+   }
+   return result;
+}
 
-<script>
 function setCookie(cname,cvalue,exdays) {
   const d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -28,17 +33,16 @@ function getCookie(cname) {
 }
 
 function checkCookie() {
-  let user = getCookie("username");
+  let user.userID = getCookie("userID");
   if (user != "") {
     alert("Welcome again " + user);
   } else {
-     user = prompt("Please enter your name:","");
+     user = {
+       userID : makeid(6);
+     }
      if (user != "" && user != null) {
-       setCookie("username", user, 30);
+       setCookie("username", user, 30*12*10);
      }
   }
 }
 checkCookie()
-</script>
-
-</html>
