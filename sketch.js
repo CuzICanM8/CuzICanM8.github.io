@@ -44,6 +44,7 @@ var localScore = 0;
 var leaderboard = [];
 var gamesPlayed = 0;
 var button = 0;
+var alert = 0;
 
 //reload page when user inputs
 
@@ -156,7 +157,9 @@ if (gameOver === false) {
         //Cookies stuff
         let userIDleaderboard = getCookie("leaderboard");
         if (userIDleaderboard != "") {
-          alert("On game " + userIDleaderboard[2] + " your highscore was: " + userIDleaderboard[1] + " Goodjob, " + userIDleaderboard[0] + " !");
+          if (alert === 0) {
+            alert("On game " + userIDleaderboard[2] + " your highscore was: " + userIDleaderboard[1] + " Goodjob, " + userIDleaderboard[0] + " !");
+          }
         } else {
            userIDleaderboard = leaderboard
            if (userIDleaderboard != "" && userIDleaderboard != null) {
