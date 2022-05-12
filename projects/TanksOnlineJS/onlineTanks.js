@@ -28,7 +28,6 @@ var user = {
 var lobbyData = {
   serverName : prompt("Name/join your server"),
   players: [],
-
 }
 
 
@@ -122,7 +121,7 @@ var wallOptions = {
 //Create functions for different stuff
 
 //allow players to shoot
-function shoot(spawnX, spawnY, radians, speed, r, g, b, w, h) {
+function shoot(spawnX, spawnY, radians, speed, r, g, b, w, h, player) {
   if (shootDelay === false) {
     const bullet = Bodies.rectangle(spawnX, spawnY, w, h, bulletOptions);
     bullets.push(bullet);
@@ -138,7 +137,9 @@ function shoot(spawnX, spawnY, radians, speed, r, g, b, w, h) {
     vec.setToPolar(radians - 1.5708, 1);
     Matter.Body.setVelocity(bullet, {x : vec.x * speed * moveDir, y :  vec.y * speed * moveDir})
       Matter.Body.rotate(bullet, radians);
-    shootDelay = true;
+    if(player === user.id ) {
+      shootDelay = true;
+    }
     var bulletData = {
       x: spawnX,
       y: spawnY,
@@ -333,7 +334,7 @@ function draw() {
     if (keyIsDown(32)) {
       var xOffset = 0 * Math.cos(playerTank.angle) - 30 * Math.sin(playerTank.angle);
       var yOffset = 30 * Math.cos(playerTank.angle) + 0 * Math.sin(playerTank.angle);
-      shoot(playerTank.position.x + xOffset, playerTank.position.y + yOffset, playerTank.angle, playerTank.speed + 10, 255, 255, 255, 4, 8);
+      shoot(playerTank.position.x + xOffset, playerTank.position.y + yOffset, playerTank.angle, playerTank.speed + 10, 255, 255, 255, 4, 8, user.id);
 
     }
     //IF Shift key pressed
@@ -472,7 +473,7 @@ function updateAPI() {
   //check if bullets have been fired, and if so then spawn a bullet with the same data.
   var channel = realtime.channels.get(lobbyData.serverName + otherPlayer + "bullet");
   channel.subscribe(function(msg) {
-    shoot(msg.data.bulletData.x, msg.data.bulletData.y, msg.data.bulletData.angle, msg.data.bulletData.speed, msg.data.bulletData.red, msg.data.bulletData.blue, msg.data.bulletData.blue, msg.data.bulletData.width, msg.data.bulletData.height);
+    shoot(msg.data.bulletData.x, msg.data.bulletData.y, msg.data.bulletData.angle, msg.data.bulletData.speed, msg.data.bulletData.red, msg.data.bulletData.blue, msg.data.bulletData.blue, msg.data.bulletData.width, msg.data.bulletData.height, otherPlayer);
   });
 }
 

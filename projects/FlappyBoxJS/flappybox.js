@@ -24,7 +24,7 @@ function getCookie(cname) {
 var userID;
 function checkUserID() {
   userID = getCookie("userID");
-  if (userID != "") {
+  if (userID != null) {
     alert("Welcome again " + userID);
   } else {
      userID = prompt("What is your name?")
