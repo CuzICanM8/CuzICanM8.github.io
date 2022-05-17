@@ -1,8 +1,22 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <!-- Loads sprites -->
-
+  <body style="background-color:black">
+  <style>
+    .button {
+      background-color: #4CAF50; /* Green */
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      width: 45%;
+    }
+  </style>
 
   <!-- This is an API server that will allow the game to be multiplayer. -->
   <script language="javaScript" type="text/javascript" src="https://cdn.ably.com/lib/ably.min-1.js"></script>
@@ -34,10 +48,12 @@
   <!-- This loads the project -->
   <script language="javascript" type="text/javascript" src="onlineTanks.js"></script>
 
+  <center>
+    <button id="createButton" onclick="createLobby()" class="button"> Create a new lobby </button>
+    <button id="joinButton" onclick="joinLobby()" class="button"> Join a lobby </button>
+  </center>
 
-
-  </script>
-  <style> body {padding: windw.innerHeight-600; margin: window.innerWidth-800;} </style>
+</script>
 </head>
 <body>
 </body>

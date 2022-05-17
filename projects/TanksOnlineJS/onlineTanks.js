@@ -1,5 +1,13 @@
 var gameStarted = false;
+var user = {
+  id: "",
+  tank: 0,
+}
 
+var lobbyData = {
+  serverName : "",
+  players: [],
+}
 //load sprites
 function preload() {
   playerSpriteImg = loadImage(kv2SpriteAssembled);
@@ -15,21 +23,131 @@ function makeid(length) {
    }
    return result;
 }
+//load function to check for spaces
+function hasWhiteSpace(s) {
+  return s.indexOf(' ') >= 0;
+}
+
+function containsSpecialChars(str) {
+  const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+  return specialChars.test(str);
+}
+
 //API
 var apiKey = 'rIDajQ.8vp1kA:pZn9VKgRCJvgGiRV78J8VnN5oZJZwuV0AJxBpVw4XGQ';
-var name = prompt("What's your name?");
 if(name === null) {
   name = makeid(6)
 }
-var user = {
-  id: name,
-  tank: 0,
-}
-var lobbyData = {
-  serverName : prompt("Name/join your server"),
-  players: [],
+
+//Server setup
+
+function createLobby() {
+  //delete the buttons
+  var elem = document.getElementById('createButton');
+  elem.parentNode.removeChild(elem);
+  var elem = document.getElementById('joinButton');
+  elem.parentNode.removeChild(elem);
+  //create input boxes
+  var inputName = document.createElement("INPUT");
+  inputName.setAttribute("type", "text");
+  inputName.setAttribute("value", "Enter your name");
+  inputName.id = "Name";
+  document.body.appendChild(inputName);
+
+  var inputLobbyName = document.createElement("INPUT");
+  inputLobbyName.setAttribute("type", "text");
+  inputLobbyName.setAttribute("value", "Name your lobby");
+  inputLobbyName.id = "LobbyName";
+  document.body.appendChild(inputLobbyName);
+
+  let submitButton = document.createElement("button");
+  submitButton.innerHTML = "submit";
+  submitButton.id = "submitButton";
+  document.body.appendChild(submitButton);
+  submitButton.onclick = function () {
+    var username = document.getElementById("Name").value;
+    var lobbyName = document.getElementById("LobbyName").value;
+    if ((username != "Enter your name" && lobbyName != "Name your lobby") && (username != null && lobbyName != null)) {
+      if(hasWhiteSpace(username) === false && hasWhiteSpace(lobbyName) === false) {
+        if(containsSpecialChars(username) === false && containsSpecialChars(lobbyName) === false) {
+          user.id = username;
+          lobbyData.serverName = lobbyName;
+          var elem = document.getElementById('Name');
+          elem.parentNode.removeChild(elem);
+          var elem = document.getElementById('LobbyName');
+          elem.parentNode.removeChild(elem);
+          var elem = document.getElementById('submitButton');
+          elem.parentNode.removeChild(elem);
+          gameInit();
+        }
+        else {
+          alert("Please type in your name and server name without special characters.")
+        }
+      }
+      else {
+        alert("Please type in your name and server name without spaces.")
+      }
+    }
+    else {
+      alert("Please type your name and server name.")
+    }
+  };
+  document.body.appendChild(submitButton);
 }
 
+function joinLobby() {
+  //delete the buttons
+  var elem = document.getElementById('createButton');
+  elem.parentNode.removeChild(elem);
+  var elem = document.getElementById('joinButton');
+  elem.parentNode.removeChild(elem);
+  //create input boxes
+  var inputName = document.createElement("INPUT");
+  inputName.setAttribute("type", "text");
+  inputName.setAttribute("value", "Enter your name");
+  inputName.id = "Name"
+  document.body.appendChild(inputName);
+
+  var inputLobbyName = document.createElement("INPUT");
+  inputLobbyName.setAttribute("type", "text");
+  inputLobbyName.setAttribute("value", "Name of Lobby");
+  inputLobbyName.id = "LobbyName";
+  document.body.appendChild(inputLobbyName);
+
+  let submitButton = document.createElement("button");
+  submitButton.innerHTML = "submit";
+  submitButton.id = "submitButton";
+  document.body.appendChild(submitButton);
+  submitButton.onclick = function () {
+    var username = document.getElementById("Name").value;
+    var lobbyName = document.getElementById("LobbyName").value;
+    if ((username != "Enter your name" && lobbyName != "Name your lobby") && (username != null && lobbyName != null)) {
+      if(hasWhiteSpace(username) === false && hasWhiteSpace(lobbyName) === false) {
+        if(containsSpecialChars(username) === false && containsSpecialChars(lobbyName) === false) {
+          user.id = username;
+          lobbyData.serverName = lobbyName;
+          var elem = document.getElementById('Name');
+          elem.parentNode.removeChild(elem);
+          var elem = document.getElementById('LobbyName');
+          elem.parentNode.removeChild(elem);
+          var elem = document.getElementById('submitButton');
+          elem.parentNode.removeChild(elem);
+          gameInit();
+        }
+        else {
+          alert("Please type in your name and server name without special characters.")
+        }
+      }
+      else {
+        alert("Please type in your name and server name without spaces.")
+      }
+    }
+    else {
+      alert("Please type your name and server name.")
+    }
+  };
+  document.body.appendChild(submitButton);
+}
 
 var seconds = 0;
 var debug = 0;
@@ -94,6 +212,7 @@ var tankOptions = {
   enableFriction: true,
   hp: 100,
   id: 0,
+  shootDelay: false,
 }
 var bulletOptions = {
   frictionStatic: 0,
@@ -122,7 +241,7 @@ var wallOptions = {
 
 //allow players to shoot
 function shoot(spawnX, spawnY, radians, speed, r, g, b, w, h, player) {
-  if (shootDelay === false) {
+  if (player.shootDelay === false) {
     const bullet = Bodies.rectangle(spawnX, spawnY, w, h, bulletOptions);
     bullets.push(bullet);
     World.add(engine.world, bullet);
@@ -131,14 +250,23 @@ function shoot(spawnX, spawnY, radians, speed, r, g, b, w, h, player) {
     bullet.blue = 255;
     bullet.speed = speed;
     bullet.id = makeid(12);
-    bullet.timeInitiated = seconds;
+    setInterval(function() {
+      player.shootDelay = false;
+    }, 2000)
+    setInterval(function() {
+      World.remove(world, bullet);
+      bullets.splice(bullets.indexOf(bullet), 1);
+    }, 5000)
     var moveDir = -1;
     const vec = new Phaser.Math.Vector2();
     vec.setToPolar(radians - 1.5708, 1);
     Matter.Body.setVelocity(bullet, {x : vec.x * speed * moveDir, y :  vec.y * speed * moveDir})
       Matter.Body.rotate(bullet, radians);
-    if(player === user.id ) {
-      shootDelay = true;
+    if(player.id === user.id) {
+      playerTank.shootDelay = true;
+    }
+    else {
+      enemyTank.shootDelay = true;
     }
     var bulletData = {
       x: spawnX,
@@ -152,28 +280,28 @@ function shoot(spawnX, spawnY, radians, speed, r, g, b, w, h, player) {
       height: h,
     }
     //tell other client that a bullet was fired
-    var channel = realtime.channels.get(lobbyData.serverName + user.id + "bullet");
+    var channel = realtime.channels.get(lobbyData.serverName + player.id + "bullet");
     channel.publish("update", { bulletData });
   }
 }
 //Create maps
 function createBorders() {
   //Top wall
-  var wall = Bodies.rectangle(worldWidth/2, 0, worldWidth, 1, wallOptions);
+  var wall = Bodies.rectangle(worldWidth/2, 0, worldWidth, 10, wallOptions);
   walls.push(wall);
   World.add(engine.world, wall);
 
   //Left wall
-  var wall = Bodies.rectangle(0, worldHeight/2, 1, worldHeight, wallOptions);
+  var wall = Bodies.rectangle(0, worldHeight/2, 10, worldHeight, wallOptions);
   walls.push(wall);
   World.add(engine.world, wall);
 
   //Right wall
-  var wall = Bodies.rectangle(worldWidth, worldHeight/2, 1, worldHeight, wallOptions);
+  var wall = Bodies.rectangle(worldWidth, worldHeight/2, 10, worldHeight, wallOptions);
   walls.push(wall);
   World.add(engine.world, wall);
   //Bottom wall
-  var wall = Bodies.rectangle(worldWidth/2, worldHeight, worldWidth, 1, wallOptions);
+  var wall = Bodies.rectangle(worldWidth/2, worldHeight, worldWidth, 10, wallOptions);
   walls.push(wall);
   World.add(engine.world, wall);
 }
@@ -209,6 +337,10 @@ function map_Crosshair() {
 
 function setup() {
   const canvas = createCanvas(worldWidth, worldHeight);
+  var x = (windowWidth - width) / 2;
+  var y = (windowHeight - height) / 2;
+  canvas.position(x, y);
+
 
   //This allows objects to warp across the screen.
   const wrap = {
@@ -231,25 +363,17 @@ function gameInit() {
   var channel = realtime.channels.get(lobbyData.serverName);
 channel.attach(function(err) {
   if(err) { return console.error("Error attaching to the channel"); }
-  console.log('We are now attached to the channel');
   channel.presence.enter('hello', function(err) {
     if(err) { return console.error("Error entering presence"); }
-    alert("Server_" + lobbyData.serverName + " is now setup.");
   });
 });
   channel.presence.get(function(err, members) {
   if(err) { return console.error("Error fetching presence data"); }
-  console.log('There are ' + members.length + ' clients present on this channel');
   var first = members[0];
-  console.log('The first member is ' + first.clientId);
-  console.log('and their data is ' + first.data);
 });
 channel.presence.subscribe(function(presenceMsg) {
-  console.log('Received a ' + presenceMsg.action + ' from ' + presenceMsg.clientId);
-  channel.presence.get(function(err, members) {
-    console.log('There are now ' + members.length + ' clients present on this channel');
+  channel.presence.get(function(err, members) {;
     if(members.length === 2) {
-      console.log('made it here');
       lobbyData.players = members.slice(0);
       if (lobbyData.players[0].clientId === user.id) {
         tank = Bodies.rectangle(map.spawn1.x, map.spawn1.y, 25, 50, tankOptions);
@@ -260,6 +384,7 @@ channel.presence.subscribe(function(presenceMsg) {
         user.tank = tank;
         tank.id = user.id;
         playerTank = tank;
+        playerTank.shootDelay = false;
 
         tank = Bodies.rectangle(map.spawn2.x, map.spawn2.y, 25, 50, tankOptions);
         tanks.push(tank);
@@ -267,6 +392,7 @@ channel.presence.subscribe(function(presenceMsg) {
         tank.playerSprite = createSprite(tank.position.x, tank.position.y, 1, 1);
         tank.playerSprite.addImage(playerSpriteImg);
         enemyTank = tank;
+        enemyTank.shootDelay = false;
       }
       else if (lobbyData.players[1].clientId === user.id) {
         tank = Bodies.rectangle(map.spawn2.x, map.spawn2.y, 25, 50, tankOptions);
@@ -277,6 +403,7 @@ channel.presence.subscribe(function(presenceMsg) {
         user.tank = tank;
         tank.id = user.id;
         playerTank = tank;
+        playerTank.shootDelay = false;
 
         tank = Bodies.rectangle(map.spawn1.x, map.spawn1.y, 25, 50, tankOptions);
         tanks.push(tank);
@@ -284,6 +411,7 @@ channel.presence.subscribe(function(presenceMsg) {
         tank.playerSprite = createSprite(tank.position.x, tank.position.y, 1, 1);
         tank.playerSprite.addImage(playerSpriteImg);
         enemyTank = tank;
+        enemyTank.shootDelay = false;
       }
       gameStarted = true;
     }
@@ -291,13 +419,10 @@ channel.presence.subscribe(function(presenceMsg) {
 });
 }
 
-gameInit();
 
 
 function draw() {
  if(gameStarted === true) {
-
-
     //Steering
     //Get the slope of the players tank from the radians.
     var moveDir = 1;
@@ -334,8 +459,7 @@ function draw() {
     if (keyIsDown(32)) {
       var xOffset = 0 * Math.cos(playerTank.angle) - 30 * Math.sin(playerTank.angle);
       var yOffset = 30 * Math.cos(playerTank.angle) + 0 * Math.sin(playerTank.angle);
-      shoot(playerTank.position.x + xOffset, playerTank.position.y + yOffset, playerTank.angle, playerTank.speed + 10, 255, 255, 255, 4, 8, user.id);
-
+      shoot(playerTank.position.x + xOffset, playerTank.position.y + yOffset, playerTank.angle, playerTank.speed + 10, 255, 255, 255, 4, 8, playerTank);
     }
     //IF Shift key pressed
     if (keyIsDown(16) && playerTank.speed > .5) {
@@ -365,16 +489,8 @@ function draw() {
       drawBody(tanks[i]);
     }
     for(i=0; i<bullets.length; i++) {
-      if(seconds > bullets[i].timeInitiated + 25) {
-        World.remove(world, bullets[i]);
-        bullets.splice(bullets.indexOf(bullets[i]), 1);
-        shootDelay = false;
-        i--;
-      }
-      else {
-        fill(bullets[i].red, bullets[i].green, bullets[i].blue);
-        drawBody(bullets[i]);
-      }
+      fill(bullets[i].red, bullets[i].green, bullets[i].blue);
+      drawBody(bullets[i]);
     }
     for(i=0; i<walls.length; i++) {
       fill(walls[i].red, walls[i].green, walls[i].blue);
@@ -392,7 +508,11 @@ function draw() {
     Matter.Body.setAngularVelocity(playerTank, 0);
     Matter.Body.setAngularVelocity(enemyTank, 0);
 
-
+    for(i=0; i<lobbyData.players.length; i++) {
+      if(lobbyData.players[i].clientId !== user.id) {
+        otherPlayer = lobbyData.players[i].clientId;
+      }
+    }
     //Check for collisions with bullets and tanks.
     for(i=0; i<tanks.length; i++) {
       for(j=0; j<bullets.length; j++) {
@@ -401,14 +521,15 @@ function draw() {
             gameStarted = false;
             if(tanks[i].id === user.id) {
               alert('You lost, ' + user.id)
+              var gameStatus = {
+                loser: user.id,
+                winner: otherPlayer,
+              }
+              var channel = realtime.channels.get(lobbyData.serverName + "gameStatus");
+              channel.publish("update", { gameStatus });
             }
             else {
-              for(i=0; i<lobbyData.players.length; i++) {
-                if(lobbyData.players[i].clientId !== user.id) {
-                  otherPlayer = lobbyData.players[i].clientId;
-                }
-              }
-              alert('You beat' + otherPlayer + ' good job, ' + user.id + '!');
+              alert('You beat ' + otherPlayer + ' good job, ' + user.id + '!');
             }
             World.remove(world, tanks[i]);
             World.remove(world, bullets[j]);
@@ -473,12 +594,23 @@ function updateAPI() {
   //check if bullets have been fired, and if so then spawn a bullet with the same data.
   var channel = realtime.channels.get(lobbyData.serverName + otherPlayer + "bullet");
   channel.subscribe(function(msg) {
-    shoot(msg.data.bulletData.x, msg.data.bulletData.y, msg.data.bulletData.angle, msg.data.bulletData.speed, msg.data.bulletData.red, msg.data.bulletData.blue, msg.data.bulletData.blue, msg.data.bulletData.width, msg.data.bulletData.height, otherPlayer);
+    shoot(msg.data.bulletData.x, msg.data.bulletData.y, msg.data.bulletData.angle, msg.data.bulletData.speed, msg.data.bulletData.red, msg.data.bulletData.blue, msg.data.bulletData.blue, msg.data.bulletData.width, msg.data.bulletData.height, enemyTank);
+  });
+
+  //check if someone lost the game
+  var channel = realtime.channels.get(lobbyData.serverName + "gameStatus");
+  channel.subscribe(function(msg) {
+    if(msg.data.gameStatus.winner === user.id) {
+      alert("YOU WON!");
+    }
+    else {
+      alert("you lost");
+    }
   });
 }
 
 var clock = setInterval(function() {
-  seconds++
+  seconds+=.1;
   if(gameStarted) {
     updateAPI();
   }
